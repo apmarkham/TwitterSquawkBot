@@ -19,7 +19,7 @@ emergencyFlights = {'callsign' : [], 'squawk': [], 'baro_altitude': []}
 
 # Loop through all state vectors and identify those with emergency squawk codes
 for s in states.states:
-    if s.squawk == "1200":
+    if s.squawk == "7700":
         emergencyFlights["callsign"].append(s.callsign)
         emergencyFlights["squawk"].append(s.squawk)
         emergencyFlights["baro_altitude"].append(s.baro_altitude)
