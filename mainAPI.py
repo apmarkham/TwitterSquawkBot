@@ -1,3 +1,6 @@
+# It is critical to remember that the OpenSky API is a free API and as such is unreliable
+# Squawk codes can be wrong and aircraft can be missing as the global coverage is not as good as a paid API
+
 import pandas as pd
 import tweepy 
 from opensky_api import OpenSkyApi
@@ -5,7 +8,7 @@ from opensky_api import OpenSkyApi
 # Handle OpenSky API and Twitter API credentials
 consumer_key = '' 
 consumer_secret = '' 
-access_token = ''
+access_token = '' 
 access_token_secret = ''
 api = OpenSkyApi("", "")
 
@@ -19,12 +22,12 @@ emergencyFlights = {'callsign' : [], 'squawk': [], 'baro_altitude': []}
 
 # Loop through all state vectors and identify those with emergency squawk codes
 for s in states.states:
-    if s.squawk == "7700":
+    if s.squawk == "7500" or s.squawk == "7600" or s.squawk == "7700":
         emergencyFlights["callsign"].append(s.callsign)
         emergencyFlights["squawk"].append(s.squawk)
         emergencyFlights["baro_altitude"].append(s.baro_altitude)
-        # print("(%r, %r, %r)" % (s.callsign, s.squawk, s.baro_altitude))
 
+# Extract all the values from the dictioary into seperate lists
 emergencyCallsign = emergencyFlights.get("callsign")
 emergencySquawk = emergencyFlights.get("squawk")
 emergencyBaroAltitude = emergencyFlights.get("baro_altitude")
@@ -42,7 +45,7 @@ emergencyBaroAltitude = [int(i * 3.28084) for i in emergencyBaroAltitude]
 for i in range(len(emergencySquawk)):
     print("Current emergency. Callsign %s, current barometric altitude %sft, squawk %s." % (emergencyCallsign[i], emergencyBaroAltitude[i], emergencySquawk[i]))
 
-# This function will check if the squawk is 7500, 7600, or 7700 and then tweet accordingly
+# This function will check if any emergency squawk codes exist and then send out a tweet for each emergency
 def postTweet():
     if len(emergencySquawk) > 0:
         for i in range(len(emergencySquawk)):
