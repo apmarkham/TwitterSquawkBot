@@ -12,3 +12,5 @@ Two files for this bot are included. Each uses a different way to pull data from
 An example of the tweet that this bot sends out is below.
 
 ![tweet](exampleTweet.png)
+
+Another API option is included, using the FlightRadar24 API.
